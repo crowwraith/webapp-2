@@ -1,0 +1,301 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+header {
+    background-color: #FFFFFF;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #FFFFFF;
+}
+
+/* Logo (optioneel) */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Navigatieknoppen */
+.nav-buttons a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+footer {
+    background-color: #FFFFFF;
+    padding: 25px 0;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.05); /* subtiele schaduw boven */
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    position: relative;
+    top: 50px
+;
+}
+
+.footer-links a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.2s;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.footer-links a:hover {
+    color: #007BFF;
+    background-color: #e6f0ff;
+    transform: translateY(-2px);
+}
+
+.achtergrond {
+    width: 100%;    /* vult de hele breedte van de container */
+    height: 250px;   /* houdt de verhouding goed */
+    display: block; /* voorkomt kleine spaties onder de afbeelding */
+}
+
+
+.achtergrond-container {
+    position: relative;
+    width: 100%;
+    height: 150px; /* hoogte van de container, pas aan naar wens */
+    overflow: hidden;
+}
+
+.achtergrond-container .achtergrond {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+.zoek-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.zoek-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #333;
+}
+
+.zoek-form input,
+.zoek-form select {
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.zoek-form button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.zoek-form button:hover {
+    background-color: #0056b3;
+}
+.foto-en-balkjes-container {
+    display: flex;
+    justify-content: center; /* optioneel: center de hele container */
+    gap: 20px;
+    max-width: 1000px;
+    margin: 2em auto;
+    padding: 0 1em;
+    align-items: flex-start;
+}
+
+.foto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 15px;
+    flex-shrink: 0; /* voorkom dat foto-grid krimpt */
+}
+
+.foto-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: block;
+}
+
+.balkjes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-shrink: 0; /* voorkom dat balkjes container krimpt */
+}
+
+.balk {
+    width: 300px;
+    height: 45px;
+    background-color: #f8f8f8; /* pas kleur naar wens aan */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+main {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 30px 25px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+}
+
+.over-ons h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #1abc9c;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.over-ons p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    color: #34495e;
+    text-align: justify;
+}
+.login-container {
+    max-width: 400px;
+    margin: 4em auto;
+    padding: 2em;
+    background-color: #e3f2fd; /* lichtblauwe achtergrond */
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.2); /* blauwe schaduw */
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #1565c0; /* diep blauw */
+}
+
+/* Formulier groepen */
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    color: #0d47a1; /* donker blauw */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid #64b5f6; /* lichtblauwe rand */
+    border-radius: 5px;
+    background-color: #bbdefb; /* zachtblauw */
+    color: #0d47a1; /* donkerblauwe tekst */
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #90caf9; /* placeholder lichtblauw */
+}
+
+/* Submit knop */
+.btn-submit {
+    width: 100%;
+    padding: 1em;
+    background-color: #2196f3; /* helder blauw */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #1976d2; /* donkerder blauw bij hover */
+}
+
+/* Foutmelding */
+.error {
+    margin-top: 1em;
+    padding: 1em;
+    background-color: #e3f2fd; /* lichtblauwe achtergrond */
+    color: #0d47a1; /* donkerblauw */
+    border: 1px solid #90caf9; /* lichtblauwe rand */
+    border-radius: 5px;
+    text-align: center;
+}
+input[type=text], select, textarea {
+    width: 100%; /* Full width */
+    padding: 12px; /* Some padding */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 4px; /* Rounded borders */
+    box-sizing: border-box; /* Make sure that padding and width stays in place */
+    margin-top: 6px; /* Add a top margin */
+    margin-bottom: 16px; /* Bottom margin */
+    resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+/* Style the submit button with a specific background color etc */
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* When moving the mouse over the submit button, add a darker green color */
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+/* Add a background color and some padding around the form */
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
