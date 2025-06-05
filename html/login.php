@@ -8,35 +8,37 @@ if(isset($_POST['Login'])) {
     $password = "rootpassword";
 
     try {
-        $conn = new PDO("mysql:host=$servername;dbname=restaurant", $username, $password);
-    } catch (PDOException $e) {
+        $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e)                                                    {
         echo "Connection failed: " . $e->getMessage();
+        exit;
     }
 
-// voeren query uit
+    // Query nu ook role ophalen
     $sql = "SELECT * FROM `gebruikers` WHERE `password` = :password AND username = :username";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':password', $_POST['password']);
     $stmt->bindParam(':username', $_POST['username']);
     $stmt->execute();
-    $gebruiker = $stmt->fetch();
+    $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if($gebruiker) {
-        $_SESSION['admin'] = true;
-        header("Location: admin.php");
+        $_SESSION['user_id'] = $gebruiker['id'];
+        $_SESSION['username'] = $gebruiker['username'];
+        $_SESSION['role'] = $gebruiker['role'];
+
+        if ($gebruiker['role'] === 'admin') {
+            header("Location: admin.php");
+        } else {
+            header("Location: index.php"); // of een andere pagina voor gewone users
+        }
+        exit;
     } else {
         $loginIncorrect = true;
     }
-
 }
-
-
-
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="nl">
@@ -71,7 +73,7 @@ if(isset($_POST['Login'])) {
         </div>
 
         <button type="submit" class="btn-submit" name="Login">Inloggen</button>
-
+        <a href="account.php" class="btn-login">maak account aan</a>
         <?php
         if ($loginIncorrect) {
             echo '<div class="error">Onjuiste gebruikersnaam of wachtwoord</div>';
