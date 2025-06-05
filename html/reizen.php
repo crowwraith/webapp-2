@@ -1,13 +1,14 @@
 <?php
-$servername = "mysql_db_2";
+$servername = "mysql_db";
 $username = "root";
 $password = "rootpassword";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=restaurant_1", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
 }
 ?>
 <!doctype html>
@@ -17,78 +18,74 @@ try {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css"/>
     <title>Document</title>
 </head>
 <body>
 <header>
-<div class="index-header-main">
-    <div class="index-header-topbar">
-        // TODO alleen vliegvakanties, rest optioneel aanbod
-        <div><a href="index.php">vacanties</a></div>
-        <div><a href="index.php">vliegtickets</a></div>
-        <div><a href="index.php">cruises</a></div>
-        <div><a href="index.php">meer reizen</a></div>
-        <p>vind jou ideale vakantie</p>
-    </div>
-    <div class="index-header-searchbars">
-        <div>
-            <div> vakantietype  </div>
-            <div> bestemming    </div>
-            <div> wanneer       </div>
-            <div> wie?          </div>
-        </div>
-        <div>
-            <zoekvelden voor bovenstaande opties. zie databasebeheer>
-        </div>
-        <div>zoeken</div>
-    </div>
-</div>
+    <a href="index.php" class="logo">Logo</a>
+    <nav class="nav-buttons">
+        <a href="ons.php">Over ons</a>
+        <a href="reizen.php">reizen</a>
+        <a href="contact.php">Service & Contact</a>
+        <a href="login.php">Login</a>
+    </nav>
 </header>
 <main class="main-reizen">
     <div class="reizen-left-side">
         <form class="searchbox" name="searchbar" action="reizen.php" method="post">
             <input class="search" type="text" name="text" placeholder="zoek hier">
             <div>
-                <button class="search-button" type="submit" name="zoekveld">
-                    <p>zoekknop</p>
-                </button>
+                <button class="search-button" type="submit" name="zoekveld">zoekknop</button>
             </div>
         </form>
     </div>
-    <?php
-    ?>
     <div class="reizen-right-side">
-        <div class="reizen-salesboard" >
+        <div class="reizen-salesboard">
             <img>
             <div class="reizen-sales">vacanties tot 499</div>
             <div class="reizen-sales">vacanties tot 699</div>
             <div class="reizen-sales">vacanties tot 999</div>
         </div>
         <!--style voor database "kaart" -->
-        <div class="reizen-main-background">
-            <p>naam van de vacantie</p>
-            <div class="set-flex">
-                <div class="reizen-main-leftbox">
-                    <div class="reizen-main-imgbox">
-                        <img class="reizen-img-vacations-left" src="assets/img/A87EFB075399E8DD614D3408B4C39369.jpg" alt="foto van de vacantie">
-                        <img class="reizen-img-vacations-right" src="assets/img/82DA0FCBBFB77554266673C9448F8FB3.jpg" alt="foto van de vacantie">
-                    </div>
-                    <p>aantal boekingen?</p>
-                </div>
-                <div class="reizen-main-rightbox">
-                    <P class="reizen-infobar-top">wanneer de reis is</P>
-                    <p class="reizen-infobar">vanaf waar de reis is</p>
-                    <P class="reizen-infobar">status/all inclusive. logies</P>
-                    <P class="reizen-infobar">transfer y/n</P>
-                    <!--style i.p.v prijs boeken op de "kaart" -->
-                    <a class="reizen-infobar-bottom" href="reizen.php">boeken  </a>
-                </div>
-            </div>
-        </div>
-    </div>
+        <?php
+        if (isset($_POST['zoekveld'])) {
+            $sql = "SELECT * FROM `reisjes` WHERE naam LIKE :text";
+            $stmt = $conn->prepare($sql);
+            $zoekterm = "%" . $_POST['text'] . "%";
+            $stmt->bindParam(":text", $zoekterm);
+            $stmt->execute();
+        } else {
+            $sql = "SELECT * FROM `reisjes`";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+        }
+        $connection = new PDO("mysql:db name=reisbureau; host=mysql_db", "root", "rootpassword");
+        while ($reisjes = $stmt->fetch()) {
+            echo "<div class='reizen-main-background'>
+                      <p>" . $reisjes["naam"] . "</p>
+                         <div class='set-flex'>
+                             <div class='reizen-main-leftbox'>
+                                 <div class='reizen-main-imgbox'>
+                                     <img class='reizen-img-vacations-left' src='assets/img/A87EFB075399E8DD614D3408B4C39369.jpg' alt='foto van de vacantie'>
+                                     <img class='reizen-img-vacations-right' src='assets/img/82DA0FCBBFB77554266673C9448F8FB3.jpg' alt='foto van de vacantie'>
+                                 </div>
+                                 <p>Aantal boekingen?</p>
+                             </div>
+                             <div class='reizen-main-rightbox'>
+                                 <P class='reizen-infobar-top'>" . $reisjes["waneer"] . "</P>
+                                 <p class='reizen-infobar'>" . $reisjes["van waar"] . "</p>
+                                 <P class='reizen-infobar'>" . $reisjes["status"] . "</P>
+                                 <P class='reizen-infobar'>" . $reisjes["transfer"] . "</P>
+                                 <P class='reizen-infobar'>" . $reisjes["prijs"] . "</P>
+                                 <a class='reizen-infobar-bottom' href='reizen.php'>boeken  </a>
+                             </div>           
+                         </div>
+                  </div>";
+        }
+        ?>
 </main>
 <footer>
-
 </footer>
 </body>
 </html>
