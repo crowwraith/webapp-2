@@ -8,7 +8,7 @@ if(isset($_POST['Login'])) {
     $password = "rootpassword";
 
     try {
-        $conn = new PDO("mysql:host=$servername;dbname=restaurant", $username, $password);
+        $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
