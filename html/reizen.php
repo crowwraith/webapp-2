@@ -1,4 +1,5 @@
 <?php
+session_start();
 $servername = "mysql_db";
 $username = "root";
 $password = "rootpassword";
@@ -60,7 +61,8 @@ try {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
         }
-        $connection = new PDO("mysql:db name=reisbureau; host=mysql_db", "root", "rootpassword");
+
+        // alle "kaartjes" ophalen vanuit database
         while ($reisjes = $stmt->fetch()) {
             echo "<div class='reizen-main-background'>
                       <p>" . $reisjes["naam"] . "</p>
@@ -78,7 +80,7 @@ try {
                                  <P class='reizen-infobar'>" . $reisjes["status"] . "</P>
                                  <P class='reizen-infobar'>" . $reisjes["transfer"] . "</P>
                                  <P class='reizen-infobar'>" . $reisjes["prijs"] . "</P>
-                                 <a class='reizen-infobar-bottom' href='reizen.php'>boeken  </a>
+                                <a class='reizen-infobar-bottom' href='login-boeken.php?reis_id=" . $reisjes['id'] . "'>boeken</a>
                              </div>           
                          </div>
                   </div>";
