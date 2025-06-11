@@ -1,7 +1,13 @@
 <?php
 $loginIncorrect = false;
 session_start();
-
+if (isset($_GET['reis_id'])) {
+    $_SESSION['reis_id'] = $_GET['reis_id'];
+    // You can now use $_SESSION['reis_id'] elsewhere on the page
+}
+if($_SESSION['username'] != null){
+     header("Location: boeken.php"); // doorverwijzing moet boeking id nog doorgeven.
+}
 if(isset($_POST['Login'])) {
     $servername = "mysql_db";
     $username = "root";
@@ -31,7 +37,7 @@ if(isset($_POST['Login'])) {
         if ($gebruiker['role'] === 'admin') {
             header("Location: admin.php");
         } else {
-            header("Location: index.php"); // of een andere pagina voor gewone users
+            header("Location: reizen.php"); // of een andere pagina voor gewone users
         }
         exit;
     } else {
