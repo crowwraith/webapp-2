@@ -33,7 +33,6 @@ if(isset($_POST['Login'])) {
         $_SESSION['user_id'] = $gebruiker['id'];
         $_SESSION['username'] = $gebruiker['username'];
         $_SESSION['role'] = $gebruiker['role'];
-        $_SESSION['trip_id'] = $gebruiker['id'];
 
         if ($gebruiker['role'] === 'admin') {
             header("Location: admin.php");

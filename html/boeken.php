@@ -43,7 +43,7 @@ $_SESSION['reis_id'] = "$reisjes.id"; } komt vanuit reizen. wordt opgeslagen op 
     $stmt->execute();
 
     $connection = new PDO("mysql:db name=reisbureau; host=mysql_db", "root", "rootpassword");
-    while ($reisjes = $stmt->fetch()) {
+    $reisjes = $stmt->fetch();
     echo "<div class='reizen-main-background'>
         <p>" . $reisjes["naam"] . "</p>
         <div class='set-flex'>
@@ -60,31 +60,22 @@ $_SESSION['reis_id'] = "$reisjes.id"; } komt vanuit reizen. wordt opgeslagen op 
                 <P class='reizen-infobar'>" . $reisjes["status"] . "</P>
                 <P class='reizen-infobar'>" . $reisjes["transfer"] . "</P>
                 <P class='reizen-infobar'>" . $reisjes["prijs"] . "</P>
-                <a class='reizen-infobar-bottom' href='login-boeken.php" . $reisjes['id'] . "'>boeken (copy van reizen)  </a>
             </div>
         </div>
     </div>";
-    }
+
     ?>
-    <!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Document</title>
-    </head>
-    <body>
-    <a class="header-button" href="Admin.php">Admin page</a>
-    <form action="post">
-
-</main>
-<footer>
-    <nav>
-        <a href="index.php" class="Home">Home</a>
-        <a href="#">Service & Contact</a>
-    </nav>
-</footer>
-
-</body>
+    <form action="reizen.php" method="post">
+        <input type="submit" name="add" value="add">
+    </form>
 </html>
-
+<?php
+if (isset($_POST['add'])) {
+$sql = "insert into boekingen (gebruikerID,reisjesID,totaalprijs) VALUES (:gebruikerID,:reisjesID,:totaalprijs)";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(":gebruikerID", $_SESSION['user_id']);
+$stmt->bindParam(":reisjesID", $_SESSION['reis_id']);
+$stmt->bindParam(":totaalprijs", $reisjes['prijs']);
+$stmt->execute();
+}
+?>
