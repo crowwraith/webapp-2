@@ -15,14 +15,21 @@ try {
 
 <?php
 if (isset($_POST['zoekveld'])) {
-    $sql = "SELECT * FROM `reisjes` WHERE naam LIKE :text";
+    $sql = "SELECT boekingen.*, reisjes.naam AS reisNaam, reisjes.status 
+        FROM boekingen 
+        JOIN reisjes ON boekingen.reisjesID = reisjes.id 
+        WHERE gebruiker LIKE :text";
     $stmt = $conn->prepare($sql);
     $zoekterm = "%" . $_POST['text'] . "%";
     $stmt->bindParam(":text", $zoekterm);
     $stmt->execute();
 } else {
-    $sql = "SELECT * FROM `reisjes`";
+    $sql = "SELECT boekingen.*, reisjes.naam AS reisNaam, reisjes.status 
+        FROM boekingen 
+        JOIN reisjes ON boekingen.reisjesID = reisjes.id 
+        WHERE gebruikerID LIKE :userID";
     $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":userID",  $_SESSION['user_id']);
     $stmt->execute();
 }
 ?>
@@ -43,11 +50,35 @@ if (isset($_POST['zoekveld'])) {
         <a href="ons.php">Over ons</a>
         <a href="reizen.php">reizen</a>
         <a href="contact.php">Service & Contact</a>
-        <a href="login.php">Login</a>
+
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
     </nav>
 </header>
 <main>
-
+<?php
+while ($boekingen = $stmt->fetch()) {
+    echo "<div class='reizen-main-background'>
+                      <p>" . $boekingen["id"] . "</p>
+                         <div class='set-flex'>
+                             <div class='reizen-main-leftbox'>
+                                 <div class='reizen-main-imgbox'>
+                                     <img class='reizen-img-vacations-left' src='assets/img/A87EFB075399E8DD614D3408B4C39369.jpg' alt='foto van de vacantie'>
+                                     <img class='reizen-img-vacations-right' src='assets/img/82DA0FCBBFB77554266673C9448F8FB3.jpg' alt='foto van de vacantie'>
+                                 </div>
+                             </div>
+                             <div class='reizen-main-rightbox'>
+                                 <P class='reizen-infobar'>" . $boekingen["gebruikerID"] . "</P>
+                                 <P class='reizen-infobar'>" . $boekingen["reisNaam"] . "</P>
+                                 <P class='reizen-infobar-bottom'>" . $boekingen["totaalprijs"] . "</P>
+                             </div>           
+                         </div>
+                  </div>";
+}
+   ?>
 </main>
 <footer>
 </footer>
