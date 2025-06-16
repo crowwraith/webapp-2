@@ -73,10 +73,8 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <input type="hidden" name="delete_id" value="<?= $reis['id'] ?>">
                         <button type="submit">Verwijder</button>
                     </form>
-
                 </td>
             </tr>
-
         <?php endforeach; ?>
         <a href="admin.php">
             <button type="button">⬅️ Terug naar Admin</button>
