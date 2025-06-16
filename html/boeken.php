@@ -3,13 +3,39 @@ session_start();
 $servername = "mysql_db";
 $username = "root";
 $password = "rootpassword";
-print_r($_SESSION);
+// print_r($_SESSION);
 try {
     $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
+}
+
+
+if (isset($_POST['add'])) {
+    $sql = "INSERT INTO boekingen (gebruikerID, reisjesID, totaalprijs) 
+            VALUES (:gebruikerID, :reisjesID, :totaalprijs)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":gebruikerID", $_SESSION['user_id']);
+    $stmt->bindParam(":reisjesID", $_SESSION['reis_id']);
+
+    // Fetch reis info again to get the prijs (or move it above)
+    $sqlPrijs = "SELECT prijs FROM reisjes WHERE id = :id";
+    $stmtPrijs = $conn->prepare($sqlPrijs);
+    $stmtPrijs->bindParam(':id', $_SESSION['reis_id']);
+    $stmtPrijs->execute();
+    $prijsResult = $stmtPrijs->fetch(PDO::FETCH_ASSOC);
+    $stmt->bindParam(":totaalprijs", $prijsResult['prijs']);
+    try {
+        $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Insert failed: " . $e->getMessage();
+        exit;
+    }
+    // Optional: redirect to avoid resubmission, change to personal info later
+    header("Location: reizen.php?success=1");
+    exit;
 }
 ?>
 <!doctype html>
@@ -31,18 +57,13 @@ try {
         <a href="login.php">Login</a>
     </nav>
 </header>
-$_SESSION['user_id'] }
-$_SESSION['username'] }
-$_SESSION['role'] } alle 3 gebruiker waardes.
-$_SESSION['reis_id'] = "$reisjes.id"; } komt vanuit reizen. wordt opgeslagen op in sessie op login-boeken
+
 <main>
     <?php
     $sql = "SELECT * FROM `reisjes` WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $_SESSION['reis_id']);
     $stmt->execute();
-
-    $connection = new PDO("mysql:db name=reisbureau; host=mysql_db", "root", "rootpassword");
     $reisjes = $stmt->fetch();
     echo "<div class='reizen-main-background'>
         <p>" . $reisjes["naam"] . "</p>
@@ -65,17 +86,8 @@ $_SESSION['reis_id'] = "$reisjes.id"; } komt vanuit reizen. wordt opgeslagen op 
     </div>";
 
     ?>
-    <form action="reizen.php" method="post">
-        <input type="submit" name="add" value="add">
+    <form action="boeken.php" method="post">
+        <input type="submit" name="add" value="boeken">
     </form>
 </html>
-<?php
-if (isset($_POST['add'])) {
-$sql = "insert into boekingen (gebruikerID,reisjesID,totaalprijs) VALUES (:gebruikerID,:reisjesID,:totaalprijs)";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(":gebruikerID", $_SESSION['user_id']);
-$stmt->bindParam(":reisjesID", $_SESSION['reis_id']);
-$stmt->bindParam(":totaalprijs", $reisjes['prijs']);
-$stmt->execute();
-}
-?>
+
