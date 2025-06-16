@@ -79,10 +79,10 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 </td>
             </tr>
-            <a href="admin.php">
-                <button type="button">⬅️ Terug naar Admin</button>
-            </a>
         <?php endforeach; ?>
+        <a href="admin.php">
+            <button type="button">⬅️ Terug naar Admin</button>
+        </a>
         </tbody>
     </table>
 
