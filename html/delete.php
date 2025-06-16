@@ -44,9 +44,6 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <main>
     <h1>Beheer Reizen – Verwijderen</h1>
 
-    <?php if (isset($melding)): ?>
-        <p style="color: green;"><?= htmlspecialchars($melding) ?></p>
-    <?php endif; ?>
 
     <table border="1" cellpadding="8">
         <thead>
@@ -64,12 +61,12 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tbody>
         <?php foreach ($reizen as $reis): ?>
             <tr>
-                <td><?= htmlspecialchars($reis['id']) ?></td>
-                <td><?= htmlspecialchars($reis['naam']) ?></td>
-                <td><?= htmlspecialchars($reis['waneer']) ?></td>
-                <td><?= htmlspecialchars($reis['van waar']) ?></td>
-                <td><?= htmlspecialchars($reis['status']) ?></td>
-                <td><?= htmlspecialchars($reis['transfer']) ?></td>
+                <td><?= ($reis['id']) ?></td>
+                <td><?= ($reis['naam']) ?></td>
+                <td><?= ($reis['waneer']) ?></td>
+                <td><?= ($reis['van waar']) ?></td>
+                <td><?= ($reis['status']) ?></td>
+                <td><?= ($reis['transfer']) ?></td>
                 <td>€ <?= number_format($reis['prijs'], 2, ',', '.') ?></td>
                 <td>
                     <form method="POST" action="delete.php" onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
@@ -79,10 +76,11 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 </td>
             </tr>
-            <a href="admin.php">
-                <button type="button">⬅️ Terug naar Admin</button>
-            </a>
+
         <?php endforeach; ?>
+        <a href="admin.php">
+            <button type="button">⬅️ Terug naar Admin</button>
+        </a>
         </tbody>
     </table>
 

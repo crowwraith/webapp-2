@@ -31,10 +31,7 @@ try {
         <a href="login.php">Login</a>
     </nav>
 </header>
-$_SESSION['user_id'] }
-$_SESSION['username'] }
-$_SESSION['role'] } alle 3 gebruiker waardes.
-$_SESSION['reis_id'] = "$reisjes.id"; } komt vanuit reizen. wordt opgeslagen op in sessie op login-boeken
+
 <main>
     <?php
     $sql = "SELECT * FROM `reisjes` WHERE id = :id";
