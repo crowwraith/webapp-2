@@ -80,7 +80,7 @@
 <footer>
     <nav>
         <a href="index.php" class="Home">Home</a>
-        <a href="#">Service & Contact</a>
+        <a href="contact.php">Service & Contact</a>
         <a href="policy.php">Policy</a>
     </nav>
 
