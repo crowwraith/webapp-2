@@ -60,23 +60,40 @@ if (isset($_POST['zoekveld'])) {
 </header>
 <main>
     <?php
-    $sql = "SELECT * FROM `gebruiker` WHERE id = :text";
+    $sql = "SELECT * FROM `gebruikers` WHERE id = :text";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(":text", $_SESSION['user_id']);
     $stmt->execute();
-    while ($gebruiker = $stmt->fetch()) {
+    while ($gebruikers = $stmt->fetch()) {
         echo "<div class='userInfoMain'>
-                <div>" . $gebruiker["id"] . "</div>
-                <div>" . $gebruiker["username"] . "</div>
+                <div>" . $gebruikers["id"] . "</div>
+                <div>" . $gebruikers["username"] . "</div>
                 
                 </div";
     }
     ?>
-
-<?php
-// boekingen die opgehaald zijn komen hier
-while ($boekingen = $stmt->fetch()) {
-    echo "<div class='reizen-main-background'>
+    <?php
+    // boekingen die opgehaald zijn komen hier
+    if (isset($_POST['zoekveld'])) {
+        $sql = "SELECT boekingen.*, reisjes.naam AS reisNaam, reisjes.status 
+        FROM boekingen 
+        JOIN reisjes ON boekingen.reisjesID = reisjes.id 
+        WHERE gebruiker LIKE :text";
+        $stmt = $conn->prepare($sql);
+        $zoekterm = "%" . $_POST['text'] . "%";
+        $stmt->bindParam(":text", $zoekterm);
+        $stmt->execute();
+    } else {
+        $sql = "SELECT boekingen.*, reisjes.naam AS reisNaam, reisjes.status 
+        FROM boekingen 
+        JOIN reisjes ON boekingen.reisjesID = reisjes.id 
+        WHERE gebruikerID LIKE :userID";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":userID",  $_SESSION['user_id']);
+        $stmt->execute();
+    }
+    while ($boekingen = $stmt->fetch()) {
+        echo "<div class='reizen-main-background'>
                       <p>" . $boekingen["id"] . "</p>
                          <div class='set-flex'>
                              <div class='reizen-main-leftbox'>
@@ -93,12 +110,13 @@ while ($boekingen = $stmt->fetch()) {
                          </div>
                           <div>
                             <a href='mijninfo-annuleren.php?id=" . $boekingen["id"] . "&gebruikerID=" . $boekingen["gebruikerID"] . "'>
-    <button>Annuleren</button>
-</a>
+                                <button>Annuleren</button>
+                            </a>
                          </div>
                   </div>";
-}
-   ?>
+    }
+    ?>
+
 </main>
 <footer>
 </footer>
