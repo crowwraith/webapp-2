@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<header>
+<header class="mobile-header">
     <a href="index.php" class="logo">Logo</a>
     <nav class="nav-buttons">
         <a href="ons.php">Over ons</a>
