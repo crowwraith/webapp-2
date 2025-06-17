@@ -1,89 +1,87 @@
 <?php
+// Verbinding maken met de database
 $servername = "mysql_db";
 $username = "root";
 $password = "rootpassword";
+$dbname = "reisbureau";
 
-// Verbind met de database
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
-    die("Databaseverbinding mislukt: " . $e->getMessage());
+    die("Verbinding mislukt: " . $e->getMessage());
 }
 
-// Verwijder reis als er een POST is
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-    $deleteId = $_POST['delete_id'];
+// Verwijder een reis als er een formulier is verstuurd met een ID
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verwijder_id'])) {
+    $id = $_POST['verwijder_id'];
 
-    $sql = "DELETE FROM reisjes WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $deleteId, PDO::PARAM_INT);
+    $stmt = $conn->prepare("DELETE FROM reisjes WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT); // Bind het ID als integer
 
     if ($stmt->execute()) {
-        $melding = " Reis met ID $deleteId is verwijderd.";
+        $melding = "✅ Reis met ID $id is verwijderd.";
     } else {
-        $melding = " Fout bij het verwijderen van reis met ID $deleteId.";
+        $melding = "❌ Verwijderen mislukt.";
     }
 }
 
-// Haal alle reizen op
-$sql = "SELECT * FROM reisjes";
-$stmt = $conn->prepare($sql);
+$stmt = $conn->prepare("SELECT * FROM reisjes");
 $stmt->execute();
 $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Reizen Verwijderen</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Alle Reizen</title>
 </head>
 <body>
-<main>
-    <h1>Beheer Reizen – Verwijderen</h1>
+<h1>Reizen Overzicht</h1>
 
+<!-- Toon de melding als er één is (bijvoorbeeld: "reis verwijderd") -->
+<?php if (isset($melding)): ?>
+    <p><strong><?= $melding ?></strong></p>
+<?php endif; ?>
 
-    <table border="1" cellpadding="8">
-        <thead>
+<!-- Tabel met alle reizen -->
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Naam</th>
+        <th>Wanneer</th>
+        <th>Van waar</th>
+        <th>Prijs</th>
+        <th>Actie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop door alle reizen heen -->
+    <?php foreach ($reizen as $reis): ?>
         <tr>
-            <th>ID</th>
-            <th>Naam</th>
-            <th>Wanneer</th>
-            <th>Van waar</th>
-            <th>Status</th>
-            <th>Transfer</th>
-            <th>Prijs</th>
-            <th>Actie</th>
+            <td><?= $reis['id'] ?></td>
+            <td><?= $reis['naam'] ?></td>
+            <td><?= $reis['waneer'] ?></td>
+            <td><?= $reis['van waar'] ?></td>
+            <td>€ <?= number_format($reis['prijs'], 2, ',', '.') ?></td>
+            <td>
+                <!-- Verwijderformulier -->
+                <form method="post" onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
+                    <!-- Verborgen veld met het ID van de reis -->
+                    <input type="hidden" name="verwijder_id" value="<?= $reis['id'] ?>">
+                    <!-- Verwijderknop -->
+                    <input type="submit" value="Verwijder">
+                </form>
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($reizen as $reis): ?>
-            <tr>
-                <td><?= ($reis['id']) ?></td>
-                <td><?= ($reis['naam']) ?></td>
-                <td><?= ($reis['waneer']) ?></td>
-                <td><?= ($reis['van waar']) ?></td>
-                <td><?= ($reis['status']) ?></td>
-                <td><?= ($reis['transfer']) ?></td>
-                <td>€ <?= number_format($reis['prijs'], 2, ',', '.') ?></td>
-                <td>
-                    <form method="POST" action="delete.php" onsubmit="return confirm('Weet je zeker dat je deze reis wilt verwijderen?');">
-                        <input type="hidden" name="delete_id" value="<?= $reis['id'] ?>">
-                        <button type="submit">Verwijder</button>
-                    </form>
+    <?php endforeach; ?>
+    </tbody>
+</table>
 
-                </td>
-            </tr>
-
-        <?php endforeach; ?>
-        <a href="admin.php">
-            <button type="button">⬅️ Terug naar Admin</button>
-        </a>
-        </tbody>
-    </table>
-
-</main>
+<!-- Terugknop naar admin-pagina -->
+<br>
+<a href="admin.php"><button>⬅️ Terug naar Admin</button></a>
 </body>
 </html>
