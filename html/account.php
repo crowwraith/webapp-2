@@ -1,40 +1,71 @@
 <?php
+// Start sessie
 session_start();
-$m = '';
-$a = false;
 
-if ($_POST) {
-    $u = $_POST['username'] ;
-    $p = $_POST['password'] ;
-    if (!$u || !$p || !$pc) $m = 'Vul alles in.';
-    elseif ($p !== $pc) $m = 'Wachtwoorden verschillen.';
-    else {
+// Melding standaard leeg
+$melding = "";
+
+// Als het formulier is verzonden
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $gebruikersnaam = $_POST["username"];
+    $wachtwoord = $_POST["password"];
+    $bevestig = $_POST["password_confirm"];
+
+    // Controleren of alles is ingevuld
+    if (empty($gebruikersnaam) || empty($wachtwoord) || empty($bevestig)) {
+        $melding = "Vul alle velden in.";
+    } elseif ($wachtwoord != $bevestig) {
+        $melding = "Wachtwoorden zijn niet gelijk.";
+    } else {
         try {
-            $db = new PDO("mysql:host=mysql_db;dbname=reisbureau", "root", "rootpassword");
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $c = $db->prepare("SELECT COUNT(*) FROM gebruikers WHERE username=?");
-            $c->execute([$u]);
-            if ($c->fetchColumn()) $m = 'Gebruiker bestaat al.';
-            else {
-                $i = $db->prepare("INSERT INTO gebruikers (username, password, role) VALUES (?, ?, 'user')");
-                $i->execute([$u, $p]);
-                $a = true;
+            // Verbinden met database
+            $pdo = new PDO("mysql:host=mysql_db;dbname=reisbureau", "root", "rootpassword");
+
+            // Check of gebruiker al bestaat
+            $stmt = $pdo->prepare("SELECT * FROM gebruikers WHERE username = ?");
+            $stmt->execute([$gebruikersnaam]);
+
+            if ($stmt->rowCount() > 0) {
+                $melding = "Gebruikersnaam bestaat al.";
+            } else {
+                // Gebruiker toevoegen
+                $stmt = $pdo->prepare("INSERT INTO gebruikers (username, password, role) VALUES (?, ?, 'user')");
+                $stmt->execute([$gebruikersnaam, $wachtwoord]);
+
+                $melding = "Account aangemaakt! Je kunt nu <a href='login.php'>inloggen</a>.";
             }
         } catch (PDOException $e) {
-            $m = 'DB fout.';
+            $melding = "Fout met databaseverbinding.";
         }
     }
 }
 ?>
-<?php if ($a): ?>
-    <p style="color:green">Account gemaakt! <a href="login.php">Login</a></p>
-<?php else: ?>
-    <?php if ($m): ?><p style="color:red"><?= $m ?></p><?php endif; ?>
-    <form method="post">
-        Gebruikersnaam:<br><input name="username"><br><br>
-        Wachtwoord:<br><input type="password" name="password"><br><br>
-        Bevestig wachtwoord:<br><input type="password" name="password_confirm"><br><br>
-        <button>Maak account</button>
-    </form>
-    <p><a href="login.php">Terug</a></p>
-<?php endif; ?>
+
+<!-- HTML formulier -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registreren</title>
+</head>
+<body>
+<h2>Maak een account</h2>
+
+<!-- Toon melding -->
+<?php if (!empty($melding)) echo "<p>$melding</p>"; ?>
+
+<form method="post">
+    Gebruikersnaam:<br>
+    <input type="text" name="username"><br><br>
+
+    Wachtwoord:<br>
+    <input type="password" name="password"><br><br>
+
+    Herhaal wachtwoord:<br>
+    <input type="password" name="password_confirm"><br><br>
+
+    <input type="submit" value="Registreren">
+</form>
+
+<p><a href="login.php">Terug naar inloggen</a></p>
+</body>
+</html>
