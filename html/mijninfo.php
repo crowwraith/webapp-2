@@ -105,7 +105,7 @@ if (isset($_POST['zoekveld'])) {
                              <div class='reizen-main-rightbox'>
                                  <P class='reizen-infobar'>" . $boekingen["gebruikerID"] . "</P>
                                  <P class='reizen-infobar'>" . $boekingen["reisNaam"] . "</P>
-                                 <P class='reizen-infobar-bottom'>" . $boekingen["totaalprijs"] . "</P>
+                                 <P class='reizen-infobar'>" . $boekingen["totaalprijs"] . "</P>
                              </div>           
                          </div>
                           <div>

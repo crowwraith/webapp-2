@@ -440,3 +440,53 @@ main-reizen{
     border-radius: 4px;
     cursor: pointer;
 }
+
+
+@media only screen and (max-width: 800px) {
+    .mobile-header{
+        height: 100px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .zoek-form{
+        flex-direction: column;
+        padding-top: 5px;
+        height: 120px;
+    }
+    .nav-buttons a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        font-size: 12px;
+        transition: color 0.3s;
+    }
+    .foto-grid{
+
+        flex-shrink: 1; /* voorkom dat foto-grid krimpt */
+    }
+    .balkjes-container{
+        display: none;
+    }
+    .balk{
+        display: none;
+    }
+    .reizen-infobar {
+        display: flex;
+        background-color: rgb(227, 243, 257);
+        height: 20px;
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 2px;
+        border-bottom-width: 1px;
+        border-bottom-color: grey;
+        border-bottom-style: solid;
+    }
+    .boeken-info{
+        display: flex;
+        background-color:  rgb(227, 243, 257);
+        height: 250px;
+    }
+}
