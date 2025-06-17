@@ -453,7 +453,7 @@ main-reizen{
     .zoek-form{
         flex-direction: column;
         padding-top: 5px;
-        height: 120px;
+        height: 300px;
     }
     .nav-buttons a {
         margin-left: 20px;
@@ -463,8 +463,10 @@ main-reizen{
         font-size: 12px;
         transition: color 0.3s;
     }
+    .achtergrond-container{
+        height: 400px;
+    }
     .foto-grid{
-
         flex-shrink: 1; /* voorkom dat foto-grid krimpt */
     }
     .balkjes-container{
