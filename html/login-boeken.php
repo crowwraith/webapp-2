@@ -6,10 +6,10 @@ if (isset($_GET['reis_id'])) {
 
     // You can now use $_SESSION['reis_id'] elsewhere on the page
 }
-if($_SESSION['username'] != null){
+if (isset($_SESSION['username']) && $_SESSION['username'] != null) {
      header("Location: boeken.php"); // doorverwijzing naar boeking in verband met aanmaken reis_id doorgeven.
     exit;
-    // gaat fout als je session uitprint.
+    // gaat fout als je session uitprint. mogelijke crash als er geen sessie is
 }
 if(isset($_POST['Login'])) {
     $servername = "mysql_db";
@@ -40,7 +40,7 @@ if(isset($_POST['Login'])) {
         if ($gebruiker['role'] === 'admin') {
             header("Location: admin.php");
         } else {
-            header("Location: reizen.php"); // of een andere pagina voor gewone users
+            header("Location: boeken.php"); // of een andere pagina voor gewone users
         }
         exit;
     } else {
@@ -63,8 +63,17 @@ if(isset($_POST['Login'])) {
     <a href="index.php" class="logo">Logo</a>
     <nav class="nav-buttons">
         <a href="ons.php">Over ons</a>
+        <a href="reizen.php">reizen</a>
         <a href="contact.php">Service & Contact</a>
-        <a href="login.php">login</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="mijninfo.php">Mijn account</a>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
     </nav>
 </header>
 <section class="login-container">

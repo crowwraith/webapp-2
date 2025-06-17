@@ -29,7 +29,15 @@ try {
         <a href="ons.php">Over ons</a>
         <a href="reizen.php">reizen</a>
         <a href="contact.php">Service & Contact</a>
-        <a href="login.php">Login</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="mijninfo.php">Mijn account</a>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
     </nav>
 </header>
 <main class="main-reizen">
