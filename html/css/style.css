@@ -408,6 +408,11 @@ main-reizen{
     width: 100%;
     margin: 0;
 }
+.boeken-info{
+    display: flex;
+    background-color:  rgb(227, 243, 257);
+    height: 150px;
+}
 .set-flex{
     display: flex;
 }

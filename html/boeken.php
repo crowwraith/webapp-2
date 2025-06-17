@@ -5,7 +5,7 @@ $username = "root";
 $password = "rootpassword";
 // print_r($_SESSION);
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
+    $conn = new PDO("mysql:host=$servername;dbname=reisbureau;charset=utf8;" , $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
@@ -92,10 +92,22 @@ if (isset($_POST['add'])) {
             </div>
         </div>
     </div>";
-
     ?>
+
+    <div class='boeken-info'>
+        <?php
+        if (!empty($reisjes["info"])) {
+         //   var_dump($reisjes);
+            echo "<p class='reizen-infobar-top'>" . ($reisjes["info"]) . "</p>";
+        } else {
+            echo "<p class='reizen-infobar-bottom'>No extra info found</p>";
+        }
+        ?>
+    </div>
     <form action="boeken.php" method="post">
         <input type="submit" name="add" value="boeken">
     </form>
+</main>
+</body>
 </html>
 

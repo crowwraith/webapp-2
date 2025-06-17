@@ -14,8 +14,8 @@ try {
 if (!empty($_POST['naam']) && !empty($_POST['waneer']) && !empty($_POST['van_waar'])
     && !empty($_POST['status']) && !empty($_POST['transfer']) && !empty($_POST['prijs'])) {
 
-    $sql = "INSERT INTO reisjes (naam, waneer, `van waar`, status, transfer, prijs)
-            VALUES (:naam, :waneer, :van_waar, :status, :transfer, :prijs)";
+    $sql = "INSERT INTO reisjes (naam, waneer, `van waar`, status, transfer, prijs, info)
+            VALUES (:naam, :waneer, :van_waar, :status, :transfer, :prijs, :info)";
 
     $stmt = $conn->prepare($sql);
 
@@ -26,6 +26,7 @@ if (!empty($_POST['naam']) && !empty($_POST['waneer']) && !empty($_POST['van_waa
     $stmt->bindParam(':status', $_POST['status']);
     $stmt->bindParam(':transfer', $_POST['transfer']);
     $stmt->bindParam(':prijs', $_POST['prijs']);
+    $stmt->bindParam(':info', $_POST['info']);
 
     // Voer de query uit
     if ($stmt->execute()) {
@@ -52,6 +53,7 @@ if (!empty($_POST['naam']) && !empty($_POST['waneer']) && !empty($_POST['van_waa
     <input type="text" name="status" placeholder="Status" required><br>
     <input type="text" name="transfer" placeholder="Transfer" required><br>
     <input type="number" step="0.01" name="prijs" placeholder="Prijs (€)" required><br><br>
+    <input type="text" name="info" placeholder="more information" required><br>
     <button type="submit">Toevoegen</button>
 </form>
 

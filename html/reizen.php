@@ -43,19 +43,12 @@ try {
 <main class="main-reizen">
     <div class="reizen-left-side">
         <form class="searchbox" name="searchbar" action="reizen.php" method="post">
-            <input class="search" type="text" name="text" placeholder="zoek hier">
+            <input class="search" type="text" name="text" placeholder="zoek hier op land">
             <div>
                 <button class="search-button" type="submit" name="zoekveld">zoekknop</button>
             </div>
         </form>
     </div>
-    <div class="reizen-right-side">
-        <div class="reizen-salesboard">
-            <img>
-            <div class="reizen-sales">vacanties tot 499</div>
-            <div class="reizen-sales">vacanties tot 699</div>
-            <div class="reizen-sales">vacanties tot 999</div>
-        </div>
         <!--style voor database "kaart" -->
         <?php
         if (isset($_POST['zoekveld'])) {

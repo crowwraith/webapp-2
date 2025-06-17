@@ -66,8 +66,8 @@ if (isset($_POST['zoekveld'])) {
     $stmt->execute();
     while ($gebruikers = $stmt->fetch()) {
         echo "<div class='userInfoMain'>
-                <div>" . $gebruikers["id"] . "</div>
-                <div>" . $gebruikers["username"] . "</div>
+                <div>je klantnummer is: " . $gebruikers["id"] . "</div>
+                <div>je gebruikersnaam is: " . $gebruikers["username"] . "</div>
                 
                 </div";
     }
