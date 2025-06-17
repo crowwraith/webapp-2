@@ -59,7 +59,22 @@ if (isset($_POST['zoekveld'])) {
     </nav>
 </header>
 <main>
+    <?php
+    $sql = "SELECT * FROM `gebruiker` WHERE id = :text";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":text", $_SESSION['user_id']);
+    $stmt->execute();
+    while ($gebruiker = $stmt->fetch()) {
+        echo "<div class='userInfoMain'>
+                <div>" . $gebruiker["id"] . "</div>
+                <div>" . $gebruiker["username"] . "</div>
+                
+                </div";
+    }
+    ?>
+
 <?php
+// boekingen die opgehaald zijn komen hier
 while ($boekingen = $stmt->fetch()) {
     echo "<div class='reizen-main-background'>
                       <p>" . $boekingen["id"] . "</p>
@@ -75,6 +90,11 @@ while ($boekingen = $stmt->fetch()) {
                                  <P class='reizen-infobar'>" . $boekingen["reisNaam"] . "</P>
                                  <P class='reizen-infobar-bottom'>" . $boekingen["totaalprijs"] . "</P>
                              </div>           
+                         </div>
+                          <div>
+                            <a href='mijninfo-annuleren.php?id=" . $boekingen["id"] . "&gebruikerID=" . $boekingen["gebruikerID"] . "'>
+    <button>Annuleren</button>
+</a>
                          </div>
                   </div>";
 }
