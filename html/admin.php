@@ -25,6 +25,23 @@ try {
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
+<header class="mobile-header">
+    <a href="index.php" class="logo">Logo</a>
+    <nav class="nav-buttons">
+        <a href="ons.php">Over ons</a>
+        <a href="reizen.php">reizen</a>
+        <a href="contact.php">Service & Contact</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="mijninfo.php">Mijn account</a>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
+    </nav>
+</header>
     <div class="admin-header">
         <h1>Welkom bij het Admin Panel</h1>
         <p>Beheer hier de reizen van het reisbureau.</p>

@@ -9,11 +9,11 @@ if (isset($_GET['reis_id'])) {
 if (isset($_SESSION['username']) && $_SESSION['username'] != null) {
      header("Location: boeken.php"); // doorverwijzing naar boeking in verband met aanmaken reis_id doorgeven.
     exit;
-    // gaat fout als je session uitprint. mogelijke crash als er geen sessie is
+    // gaat fout als je session uitprint.
 }
 else{
     header("Location: login.php");
+    // doorverwijzing naar login.
 }
-
 ?>
 

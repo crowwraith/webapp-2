@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Verbinding maken met de database
 $servername = "mysql_db";
 $username = "root";
@@ -38,6 +39,24 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Alle Reizen</title>
 </head>
 <body>
+<header class="mobile-header">
+    <a href="index.php" class="logo">Logo</a>
+    <nav class="nav-buttons">
+        <a href="admin.php">Over ons</a>
+        <a href="ons.php">Over ons</a>
+        <a href="reizen.php">reizen</a>
+        <a href="contact.php">Service & Contact</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="mijninfo.php">Mijn account</a>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
+    </nav>
+</header>
 <h1>Reizen Overzicht</h1>
 
 <!-- Toon de melding als er één is (bijvoorbeeld: "reis verwijderd") -->
