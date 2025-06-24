@@ -42,7 +42,7 @@ $reizen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <header class="mobile-header">
     <a href="index.php" class="logo">Logo</a>
     <nav class="nav-buttons">
-        <a href="admin.php">Over ons</a>
+        <a href="admin.php">Admin panel</a>
         <a href="ons.php">Over ons</a>
         <a href="reizen.php">reizen</a>
         <a href="contact.php">Service & Contact</a>
