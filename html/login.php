@@ -16,14 +16,13 @@ if(isset($_POST['Login'])) {
     }
 
     // Query nu ook role ophalen
-    $sql = "SELECT * FROM `gebruikers` WHERE `password` = :password AND username = :username";
+    $sql = "SELECT * FROM `gebruikers` WHERE username = :username";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':password', $_POST['password']);
     $stmt->bindParam(':username', $_POST['username']);
     $stmt->execute();
     $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($gebruiker) {
+    if ($gebruiker && password_verify($_POST['password'], $gebruiker['password'])) {
         $_SESSION['user_id'] = $gebruiker['id'];
         $_SESSION['username'] = $gebruiker['username'];
         $_SESSION['role'] = $gebruiker['role'];

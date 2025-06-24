@@ -28,9 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt->rowCount() > 0) {
                 $melding = "Gebruikersnaam bestaat al.";
             } else {
-                // Gebruiker toevoegen
+                // Gebruiker toevoegen met gehashte wachtwoord
+                $hashedPassword = password_hash($wachtwoord, PASSWORD_DEFAULT);
                 $stmt = $pdo->prepare("INSERT INTO gebruikers (username, password, role) VALUES (?, ?, 'user')");
-                $stmt->execute([$gebruikersnaam, $wachtwoord]);
+                $stmt->execute([$gebruikersnaam, $hashedPassword]);
 
                 $melding = "Account aangemaakt! Je kunt nu <a href='login.php'>inloggen</a>.";
             }
