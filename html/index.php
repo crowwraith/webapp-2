@@ -19,7 +19,9 @@
         <?php if (isset($_SESSION['username'])): ?>
             <a href="mijninfo.php">Mijn account</a>
         <?php endif; ?>
-
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="admin.php">Admin Panel</a>
+        <?php endif; ?>
         <?php if (isset($_SESSION['username'])): ?>
             <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
         <?php else: ?>
