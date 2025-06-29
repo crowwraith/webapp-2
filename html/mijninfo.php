@@ -41,7 +41,7 @@ if (isset($_POST['zoekveld'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/style.css"/>
-    <title>Document</title>
+    <title>Mijn gegeves</title>
 </head>
 <body>
 <header>
@@ -111,6 +111,9 @@ if (isset($_POST['zoekveld'])) {
                           <div>
                             <a href='mijninfo-annuleren.php?id=" . $boekingen["id"] . "&gebruikerID=" . $boekingen["gebruikerID"] . "'>
                                 <button>Annuleren</button>
+                            </a>
+                            <a href='recenties.php?id=" . $boekingen["reisjesID"] . "&gebruikerID=" . $boekingen["gebruikerID"] . "'>
+                                <button> plaats een recentie</button>
                             </a>
                          </div>
                   </div>";

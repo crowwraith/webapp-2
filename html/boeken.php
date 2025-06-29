@@ -43,7 +43,7 @@ if (isset($_POST['add'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Document</title>
+    <title>Boek je reis</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -107,6 +107,41 @@ if (isset($_POST['add'])) {
     <form action="boeken.php" method="post">
         <input type="submit" name="add" value="boeken">
     </form>
+    <?php
+
+    $reis_id = isset($_SESSION['reis_id']) && is_numeric($_SESSION['reis_id']) ? (int)$_SESSION['reis_id'] : null;
+    if (!$reis_id) {
+        echo "<p>Ongeldige reis geselecteerd.</p>";
+        exit;
+    }
+
+    $sqlRecensies = "SELECT naam, recensie, datum FROM recensies WHERE reis_id = :reis_id ORDER BY datum DESC";
+    $stmtRecensies = $conn->prepare($sqlRecensies);
+    $stmtRecensies->bindParam(':reis_id', $reis_id, PDO::PARAM_INT);
+    $stmtRecensies->execute();
+    $recensies = $stmtRecensies->fetchAll(PDO::FETCH_ASSOC);
+
+    echo "<div class='reizen-main-background'>";
+    echo "<h2 class='reizen-infobar-top'>Recensies</h2>";
+
+    if ($recensies) {
+        foreach ($recensies as $recensie) {
+            echo "<div class='reizen-main-rightbox'>";
+            echo "<p class='reizen-infobar'><strong>" . htmlspecialchars($recensie['naam']) . "</strong></p>";
+            echo "<p class='reizen-infobar'>" . nl2br(htmlspecialchars($recensie['recensie'])) . "</p>";
+            echo "<p class='reizen-infobar'>" . date("d-m-Y", strtotime($recensie['datum'])) . "</p>";
+            echo "</div>";
+        }
+    } else {
+        echo "<div class='reizen-main-rightbox'>";
+        echo "<p class='reizen-infobar'>Er zijn nog geen recensies voor deze reis.</p>";
+        echo "</div>";
+    }
+
+    echo "</div>";
+
+
+    ?>
 </main>
 </body>
 </html>
