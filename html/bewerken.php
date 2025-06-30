@@ -1,8 +1,9 @@
 <?php
+session_start();
 $servername = "mysql_db";
 $username = "root";
 $password = "rootpassword";
-
+$id = (int)$_GET['id'];
 try {
     $conn = new PDO("mysql:host=$servername;dbname=reisbureau", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -25,7 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<p>Reis bijgewerkt!</p>";
 }
 
-$reisjes = $conn->query("SELECT * FROM reisjes")->fetchAll(PDO::FETCH_ASSOC);
+$sqlSelect = "SELECT * FROM reisjes WHERE id = :id";
+$stmtSelect = $conn->prepare($sqlSelect);
+$stmtSelect->bindParam(':id', $id, PDO::PARAM_INT);
+$stmtSelect->execute();
+$reis = $stmtSelect->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -41,36 +46,56 @@ $reisjes = $conn->query("SELECT * FROM reisjes")->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
+<header class="mobile-header">
+    <a href="index.php" class="logo">Logo</a>
+    <nav class="nav-buttons">
+        <a href="admin.php">Admin panel</a>
+        <a href="ons.php">Over ons</a>
+        <a href="reizen.php">reizen</a>
+        <a href="contact.php">Service & Contact</a>
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="mijninfo.php">Mijn account</a>
+        <?php endif; ?>
 
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="logout.php">Uitloggen (<?= $_SESSION['username']; ?>)</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
+    </nav>
+</header>
 <h1>Bewerk hier je reizen</h1>
 
-<?php foreach ($reisjes as $item): ?>
-    <div class="reis">
-        <form method="POST">
-            <input type="hidden" name="id" value="<?= $item['id'] ?>">
+<?php if ($reis): ?>
+<div class="reis">
+    <form method="POST">
+        <input type="hidden" name="id" value="<?= htmlspecialchars($reis['id']) ?>">
 
-            <label>Naam:</label>
-            <input type="text" name="naam" value="<?= $item['naam'] ?>" required>
+        <label>Naam:</label>
+        <input type="text" name="naam" value="<?= htmlspecialchars($reis['naam']) ?>" required>
 
-            <label>Wanneer:</label>
-            <input type="date" name="waneer" value="<?= $item['waneer'] ?>" required>
+        <label>Wanneer:</label>
+        <input type="date" name="waneer" value="<?= htmlspecialchars($reis['waneer']) ?>" required>
 
-            <label>Van waar:</label>
-            <input type="text" name="van_waar" value="<?= $item['van waar'] ?>" required>
+        <label>Van waar:</label>
+        <input type="text" name="van_waar" value="<?= htmlspecialchars($reis['van waar']) ?>" required>
 
-            <label>Status:</label>
-            <input type="text" name="status" value="<?= $item['status'] ?>" required>
+        <label>Status:</label>
+        <input type="text" name="status" value="<?= htmlspecialchars($reis['status']) ?>" required>
 
-            <label>Transfer:</label>
-            <input type="text" name="transfer" value="<?= $item['transfer'] ?>" required>
+        <label>Transfer:</label>
+        <input type="text" name="transfer" value="<?= htmlspecialchars($reis['transfer']) ?>" required>
 
-            <label>Prijs (€):</label>
-            <input type="number" step="0.01" name="prijs" value="<?= $item['prijs'] ?>" required>
+        <label>Prijs (€):</label>
+        <input type="number" step="0.01" name="prijs" value="<?= htmlspecialchars($reis['prijs']) ?>" required>
 
-            <input type="submit" value="Opslaan">
-        </form>
-    </div>
-<?php endforeach; ?>
+        <input type="submit" value="Opslaan">
+    </form>
+</div>
+<?php else: ?>
+<p>Geen reis gevonden met deze ID.</p>
+<?php endif; ?>
+
 
 </body>
 </html>
